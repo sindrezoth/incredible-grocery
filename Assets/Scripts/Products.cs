@@ -1,0 +1,23 @@
+public enum Products {
+  Apple,
+  Avocado,
+  Bananas,
+  Beacon,
+  Beer,
+  Beet,
+  Blueberry,
+  Beans,
+  Broccoli,
+  Butter,
+  Salad,
+  Cake,
+  Bone,
+  Borsch,
+  ChickenGrill,
+  Bread,
+  Chocolate,
+  CandyStick,
+  Candies,
+  Carrot,
+  Sell
+}

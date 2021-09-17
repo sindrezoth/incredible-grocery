@@ -5,13 +5,13 @@ using UnityEngine;
 public class BuyerSpawner : MonoBehaviour
 {
 
-    public GameObject buyer;
+    public GameObject Buyer;
 
-    private List<GameObject> buyers;
+    private List<GameObject> _buyers;
     // Start is called before the first frame update
     void Start()
     {
-        buyers = new List<GameObject>();
+        _buyers = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -21,10 +21,19 @@ public class BuyerSpawner : MonoBehaviour
         {
             Spawn();
         }
+
+        for (int i = 0; i < _buyers.Count; i++) {
+            /*if((_buyers[i] as Buyer)._isReadyToDie == true)
+            {
+                GameObject temp = _buyers[i];  //idk, one gameobject inside my list and another unity's gameobjects array
+                _buyers.Remove(_buyers[i]);    //probably delete from at least one of them i can lose both references (but i think of course no)
+                Destroy(temp);
+            }*/
+        }
     }
 
     void Spawn()
     {
-        buyers.Add(Instantiate(buyer, transform.position, Quaternion.identity));
+        _buyers.Add(Instantiate(Buyer, transform.position, Quaternion.identity));
     }
 }
