@@ -18,6 +18,5 @@ public enum Products {
   Chocolate,
   CandyStick,
   Candies,
-  Carrot,
-  Sell
+  Carrot
 }

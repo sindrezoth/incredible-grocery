@@ -29,7 +29,6 @@ public class Buyer : MonoBehaviour
     void Start()
     {
         _cachier = GameObject.Find("Cachier").GetComponent<Cachier>();
-        Debug.Log($"_cachier = {_cachier}");
         _timer = 0f;
         _startPosition = new Vector2(transform.position.x, transform.position.y);
         _endPosition = new Vector3(-3.6f, -0.65f);
@@ -55,7 +54,6 @@ public class Buyer : MonoBehaviour
             }
             else
             {
-                transform.localScale = new Vector3(-1, 1, 1);
                 _isReadyToDie = Move(_endPosition, _startPosition);
             }
         }
@@ -63,27 +61,43 @@ public class Buyer : MonoBehaviour
 
     IEnumerator CycleCoroutine()
     {
-        Debug.Log("Almost Come!");
+        ProductGenerating();
+
         yield return new WaitUntil(() => _isReadyToOrder);
+        _union.GetComponent<Union>().Show(_prods);
 
-        Debug.Log("Is Come To Order!");
-        _isReadyToOrder = true;
-        Debug.Log($"_isReadyToOrder = {_isReadyToOrder}\n_productsToOrderCount = {_productsToOrderCount}\n_prods = {_prods[0]}");
-        _cachier.ProductsSolts(ref _prods);
-        _union.SetActive(true);
-        yield return new WaitUntil(() => _cachier.IsOrderReady());
+        yield return new WaitForSeconds(5f);
+        _union.GetComponent<Union>().Refresh();
+        _cachier.ProductsSolts(_prods);
 
+        yield return new WaitUntil(() => _cachier.IsOrderReady);
         _isOrderGetted = true;
+        _isHappy = _cachier.IsCachierRight;
         _isReadyToOrder = false;
-        Debug.Log("Order is Getted!");
+        _union.GetComponent<Union>().Show(_isHappy);
+        transform.localScale = new Vector3(-1, 1, 1);
+        _union.transform.parent.localScale = new Vector3(-1, 1, 1);
+
+        yield return new WaitUntil(() => (_timer / _timeOfMove) == 0.1f);
+        _union.GetComponent<Union>().Refresh();
+
         yield return new WaitUntil(() => _isReadyToDie);
     }
 
     private void ProductGenerating()
     {
-        for (int i = 0; i < _prods.Length; i++)
+        _prods[0] = (Products)Random.Range(1, _enumProductsCount + 1);
+        for (int i = 1; i < _prods.Length; i++)
         {
-            _prods[i] = (Products)Random.Range(1, _enumProductsCount + 1);
+            for (int j = 0; j < i; j++)
+            {
+                _prods[i] = (Products)Random.Range(1, _enumProductsCount + 1);
+                if(_prods[i] == _prods[j])
+                {
+                    i--;
+                    break;
+                }
+            }
         }
     }
 

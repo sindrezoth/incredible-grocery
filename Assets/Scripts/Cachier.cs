@@ -4,33 +4,43 @@ using UnityEngine;
 
 public class Cachier : MonoBehaviour
 {
+    [SerializeField]
+    GameObject Panel;
 
-    private bool _isOrderReady;
+    public bool IsOrderReady;
+    public bool IsCachierRight;
     private Products[] _productsToSell;
+    private Products[] _productsPicked;
     // Start is called before the first frame update
     void Start()
     {
-        _isOrderReady = false;
+        IsCachierRight = false;
+        IsOrderReady = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.Y))
-        {
-            _isOrderReady = true;
-        }
+
     }
 
-
-    public bool IsOrderReady()
+    public void Sell()
     {
-        return _isOrderReady;
+        Panel.GetComponent<PanelStorage>().Hide();
+        _productsPicked = Panel.GetComponent<PanelStorage>().Picked.ToArray();
+        IsCachierRight = CheckEquality();
+        IsOrderReady = true;
     }
 
-    public void ProductsSolts(ref Products[] productsToSell)
+    private bool CheckEquality()
     {
-        _isOrderReady = false;
+        return true;
+    }
+
+    public void ProductsSolts(Products[] productsToSell)
+    {
+        Panel.GetComponent<PanelStorage>().Show(productsToSell.Length);
+        IsOrderReady = false;
         _productsToSell = productsToSell;
     }
 }
